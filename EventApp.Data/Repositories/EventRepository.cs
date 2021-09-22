@@ -15,6 +15,8 @@ namespace EventApp.Data.Repositories
         private static class Procedure
         {
             public const string GetEvents = "sp_GetEvents";
+            public const string InsertEvent = "sp_InsertEvent";
+            public const string CheckUniqueEvent = "sp_CheckUniqueEvent";
         }
 
         public EventRepository(IDbContext databaseContext, ISqlExecutor sqlExecutor)
@@ -26,14 +28,6 @@ namespace EventApp.Data.Repositories
         public async Task<List<EventDto>> GetEvents()
         {
             var eventsList = new List<EventDto>();
-
-            // TODO add parameters for potential parameter like fromDate etc ...
-            //var parameters = new
-            //{
-            //    userInformation.TenantId,
-            //    excludeDisabled,
-            //    chNodeCodes = userInformation.CustomerHierarchyNodeCodes.AsStringList()
-            //};
             IEnumerable<EventDto> rows;
 
             using (_databaseContext.StartTransaction())
@@ -56,6 +50,64 @@ namespace EventApp.Data.Repositories
             }
 
             return eventsList;
+        }
+
+        public async Task<bool> CheckUniqueEvent(string name)
+        {
+            name = Helpers.TrimSafe(name);
+
+            var parameters = new
+            {
+                name,
+            };
+            int result = (int)decimal.MinusOne;
+
+            using (_databaseContext.StartTransaction())
+            {
+                using (var connection = await _databaseContext.GetConnection())
+                {
+                    result = await
+                        _sqlExecutor.ExecuteScalarStoredProcedureAsync<int>(connection,
+                            Procedure.CheckUniqueEvent, parameters);
+                }
+            }
+
+            return result == decimal.Zero;
+        }
+
+        public async Task<EventDto> InsertEvent(EventDto eventDto)
+        {
+            TrimEvent(eventDto);
+
+            var parameters = new
+            {
+                name = eventDto.Name,
+                description = eventDto.Description,
+                location = eventDto.Location,
+                startTime = eventDto.StartTime,
+                endTime = eventDto.EndTime
+            };
+
+            using (_databaseContext.StartTransaction())
+            {
+                using (var connection = await _databaseContext.GetConnection())
+                {
+                    var newId = await _sqlExecutor.ExecuteScalarStoredProcedureAsync<long>(connection,
+                        Procedure.InsertEvent,
+                        parameters);
+                    eventDto.Id = newId;
+                }
+                await _databaseContext.Commit();
+            }
+
+            return eventDto;
+        }
+
+        private void TrimEvent(EventDto eventDto)
+        {
+            eventDto.Name = Helpers.TrimSafe(eventDto.Name);
+            eventDto.Description = Helpers.TrimSafe(eventDto.Description);
+            eventDto.Location = Helpers.TrimSafe(eventDto.Location);
         }
     }
 }

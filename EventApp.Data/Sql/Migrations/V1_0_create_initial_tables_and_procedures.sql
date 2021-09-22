@@ -190,8 +190,8 @@ END
 GO
 
 
- --------------------------------------------------------------------------------
---                                sp_CheckUniqueRegistration                         --
+--------------------------------------------------------------------------------
+--                                sp_CheckUniqueRegistration                  --
 --------------------------------------------------------------------------------
 IF EXISTS (
 		SELECT 1
@@ -219,5 +219,75 @@ BEGIN
 	INNER JOIN [Event] e ON r.EventId = e.Id 
 	WHERE e.[Name] = @eventName
 	AND (Phone = @phone OR Email = @email)
+END
+GO
+
+--------------------------------------------------------------------------------
+--                                sp_CheckUniqueEvent                         --
+--------------------------------------------------------------------------------
+IF EXISTS (
+		SELECT 1
+		FROM sys.objects
+		WHERE object_id = OBJECT_ID(N'sp_CheckUniqueEvent')
+			AND TYPE IN (
+				N'P'
+				,N'PC'
+				)
+		)
+BEGIN
+	DROP PROCEDURE [sp_CheckUniqueEvent]
+END
+GO
+
+CREATE PROCEDURE [sp_CheckUniqueEvent]
+(
+	@name NVARCHAR(100)
+)
+AS
+BEGIN
+	SELECT COUNT(*) FROM [Event] WHERE [Name] = @name
+END
+GO
+
+--------------------------------------------------------------------------------
+--                                sp_InsertEvent                              --
+--------------------------------------------------------------------------------
+IF EXISTS (
+		SELECT 1
+		FROM sys.objects
+		WHERE object_id = OBJECT_ID(N'sp_InsertEvent')
+			AND TYPE IN (
+				N'P'
+				,N'PC'
+				)
+		)
+BEGIN
+	DROP PROCEDURE [sp_InsertEvent]
+END
+GO
+
+CREATE PROCEDURE [sp_InsertEvent]
+(
+	@name NVARCHAR(100),
+	@description NVARCHAR(500),
+	@location NVARCHAR(100),
+	@startTime DATETIME,
+	@endTime DATETIME
+)
+AS
+BEGIN
+	INSERT INTO [dbo].[Event]
+			([Name]
+			,[Description]
+			,[Location]
+			,[StartTime]
+			,[EndTime])
+		VALUES
+			(@name
+			,@description
+			,@location
+			,@startTime
+			,@endTime)
+	SELECT @@IDENTITY
 END
 GO

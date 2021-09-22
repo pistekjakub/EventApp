@@ -7,5 +7,9 @@ namespace EventApp.Data.Repositories
     public interface IEventRepository
     {
         public Task<List<EventDto>> GetEvents();
+
+        public Task<bool> CheckUniqueEvent(string eventName);
+
+        public Task<EventDto> InsertEvent(EventDto eventDto);
     }
 }

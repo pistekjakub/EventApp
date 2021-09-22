@@ -3,7 +3,7 @@ using EventApp.Data.Dtos;
 using EventApp.Models.Models;
 using System.Collections.Generic;
 
-namespace EventApp.EntityMapper
+namespace EventApp
 {
     public static class EntityMapper
     {

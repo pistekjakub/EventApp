@@ -61,6 +61,7 @@ namespace EventApp.Data.Repositories
         public async Task<bool> CheckUniqueRegistration(RegistrationDto registration, string eventName)
         {
             TrimRegistration(registration);
+            eventName = Helpers.TrimSafe(eventName);
 
             var parameters = new
             {
@@ -68,7 +69,7 @@ namespace EventApp.Data.Repositories
                 email = registration.Email,
                 eventName,
             };
-            int result = -1;
+            int result = (int)decimal.MinusOne;
 
             using (_databaseContext.StartTransaction())
             {
@@ -80,7 +81,7 @@ namespace EventApp.Data.Repositories
                 }
             }
 
-            return result == 0;
+            return result == decimal.Zero;
         }
 
         public async Task<RegistrationDto> InsertRegistration(RegistrationDto registration, string eventName)
@@ -98,7 +99,7 @@ namespace EventApp.Data.Repositories
             {
                 using (var connection = await _databaseContext.GetConnection())
                 {
-                    var newId = await _sqlExecutor.ExecuteScalarStoredProcedureAsync<int>(connection,
+                    var newId = await _sqlExecutor.ExecuteScalarStoredProcedureAsync<long>(connection,
                         Procedure.InsertRegistration,
                         parameters);
                     registration.Id = newId;
@@ -109,21 +110,11 @@ namespace EventApp.Data.Repositories
             return registration;
         }
 
-        private string TrimSafe(string? inputString)
-        {
-            if (!string.IsNullOrEmpty(inputString))
-            {
-                return inputString.Trim();
-            }
-
-            return inputString;
-        }
-
         private void TrimRegistration(RegistrationDto registration)
         {
-            registration.Name = TrimSafe(registration.Name);
-            registration.Email = TrimSafe(registration.Email);
-            registration.Phone = TrimSafe(registration.Phone);
+            registration.Name = Helpers.TrimSafe(registration.Name);
+            registration.Email = Helpers.TrimSafe(registration.Email);
+            registration.Phone = Helpers.TrimSafe(registration.Phone);
         }
     }
 }

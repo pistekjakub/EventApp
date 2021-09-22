@@ -7,5 +7,7 @@ namespace EventApp.Services
     public interface IEventService
     {
         public Task<GetEventsResponse> GetEvents(GetEventsRequest request);
+
+        public Task<InsertEventResponse> InsertEvent(InsertEventRequest request);
     }
 }

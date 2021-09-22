@@ -21,7 +21,7 @@ namespace EventApp.Services
             var registrationsDtos = await _registrationRepository.GetRegistrations(request.EventName);
             var result = new GetReqistrationsResponse
             {
-                Registrations = EventApp.EntityMapper.EntityMapper.MapRegistrationsDtos(registrationsDtos)
+                Registrations = EntityMapper.MapRegistrationsDtos(registrationsDtos)
             };
             return result;
         }
@@ -37,7 +37,7 @@ namespace EventApp.Services
             bool isUnique = await _registrationRepository.CheckUniqueRegistration(registrationDto, request.EventName);
             if (!isUnique) 
             {
-                throw new ArgumentException($"Email {request.Email} or Phone {request.Phone} of event ${request.EventName} is not uniques");
+                throw new ArgumentException($"Either Email {request.Email} or Phone {request.Phone} or event name ${request.EventName} is not unique");
             }
 
             var insertedDto = await _registrationRepository.InsertRegistration(registrationDto, request.EventName);
