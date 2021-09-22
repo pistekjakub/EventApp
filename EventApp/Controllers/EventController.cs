@@ -3,7 +3,8 @@ using EventApp.Models.Responses;
 using EventApp.Services;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Cors;
+using Microsoft.Extensions.Logging;
+using System;
 
 namespace EventApp.Controllers
 {
@@ -13,16 +14,35 @@ namespace EventApp.Controllers
     {
         private readonly IEventService _eventService;
 
-        public EventController(IEventService eventService)
+        private readonly ILogger<EventController> _logger;
+
+        public EventController(IEventService eventService, ILogger<EventController> logger)
         {
             _eventService = eventService;
+            _logger = logger;
         }
 
-        //[EnableCors]
         [HttpGet]
         public async Task<GetEventsResponse> Get()
         {
             return await _eventService.GetEvents(new GetEventsRequest());
+        }
+
+        [HttpPost]
+        public async Task<ActionResult<InsertEventResponse>> Post([FromBody] InsertEventRequest request)
+        {
+            try
+            {
+                return await _eventService.InsertEvent(request);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex.StackTrace);
+                return new InsertEventResponse
+                {
+                    Error = ex.Message
+                };
+            }
         }
     }
 }

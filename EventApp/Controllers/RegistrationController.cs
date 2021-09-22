@@ -4,6 +4,8 @@ using EventApp.Models.Responses;
 using EventApp.Services;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
+using System;
+using Microsoft.Extensions.Logging;
 
 namespace EventApp.Controllers
 {
@@ -12,10 +14,12 @@ namespace EventApp.Controllers
     public class RegistrationController : ControllerBase
     {
         private readonly IRegistrationService _registrationService;
+        private readonly ILogger<RegistrationController> _logger;
 
-        public RegistrationController(IRegistrationService registrationService)
+        public RegistrationController(IRegistrationService registrationService, ILogger<RegistrationController> logger)
         {
             _registrationService = registrationService;
+            _logger = logger;
         }
 
         [HttpGet("{eventName}")]
@@ -27,8 +31,18 @@ namespace EventApp.Controllers
         [HttpPost]
         public async Task<ActionResult<InsertRegistrationResponse>> Post([FromBody] InsertRegistrationRequest request) 
         {
-            return await _registrationService.InsertRegistration(request);
+            try
+            {
+                return await _registrationService.InsertRegistration(request);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex.StackTrace);
+                return new InsertRegistrationResponse
+                {
+                    Error = ex.Message
+                };
+            }
         }
-
     }
 }
