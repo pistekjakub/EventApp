@@ -36,23 +36,18 @@ namespace EventApp.Data.Repositories
 
             IEnumerable<RegistrationDto> rows;
 
-            using (_databaseContext.StartTransaction())
+            using (var connection = await _databaseContext.GetConnection())
             {
-                using (var connection = await _databaseContext.GetConnection())
-                {
-                    rows = await
-                        _sqlExecutor.ExecuteQueryStoredProcedureAsync<RegistrationDto>(connection,
-                            Procedure.GetRegistrations, parameters);
-                }
+                rows = await
+                    _sqlExecutor.ExecuteQueryStoredProcedureAsync<RegistrationDto>(connection,
+                        Procedure.GetRegistrations, parameters);
+            }
 
-                if (rows != null)
-                {
-                    var registrations = rows as RegistrationDto[] ?? rows.ToArray();
+            if (rows != null)
+            {
+                var registrations = rows as RegistrationDto[] ?? rows.ToArray();
 
-                    registrationsList.AddRange(registrations);
-                }
-
-                await _databaseContext.Commit();
+                registrationsList.AddRange(registrations);
             }
 
             return registrationsList;
@@ -70,15 +65,11 @@ namespace EventApp.Data.Repositories
                 eventName,
             };
             int result = (int)decimal.MinusOne;
-
-            using (_databaseContext.StartTransaction())
+            using (var connection = await _databaseContext.GetConnection())
             {
-                using (var connection = await _databaseContext.GetConnection())
-                {
-                    result = await
-                        _sqlExecutor.ExecuteScalarStoredProcedureAsync<int>(connection,
-                            Procedure.CheckUniqueRegistration, parameters);
-                }
+                result = await
+                    _sqlExecutor.ExecuteScalarStoredProcedureAsync<int>(connection,
+                        Procedure.CheckUniqueRegistration, parameters);
             }
 
             return result == decimal.Zero;
@@ -95,16 +86,12 @@ namespace EventApp.Data.Repositories
                 eventName
             };
 
-            using (_databaseContext.StartTransaction())
+            using (var connection = await _databaseContext.GetConnection())
             {
-                using (var connection = await _databaseContext.GetConnection())
-                {
-                    var newId = await _sqlExecutor.ExecuteScalarStoredProcedureAsync<long>(connection,
-                        Procedure.InsertRegistration,
-                        parameters);
-                    registration.Id = newId;
-                }
-                await _databaseContext.Commit();
+                var newId = await _sqlExecutor.ExecuteScalarStoredProcedureAsync<long>(connection,
+                    Procedure.InsertRegistration,
+                    parameters);
+                registration.Id = newId;
             }
 
             return registration;

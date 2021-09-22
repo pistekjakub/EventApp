@@ -30,23 +30,18 @@ namespace EventApp.Data.Repositories
             var eventsList = new List<EventDto>();
             IEnumerable<EventDto> rows;
 
-            using (_databaseContext.StartTransaction())
+            using (var connection = await _databaseContext.GetConnection())
             {
-                using (var connection = await _databaseContext.GetConnection())
-                {
-                    rows = await
-                        _sqlExecutor.ExecuteQueryStoredProcedureAsync<EventDto>(connection,
-                            Procedure.GetEvents);
-                }
+                rows = await
+                    _sqlExecutor.ExecuteQueryStoredProcedureAsync<EventDto>(connection,
+                        Procedure.GetEvents);
+            }
 
-                if (rows != null)
-                {
-                    var events = rows as EventDto[] ?? rows.ToArray();
+            if (rows != null)
+            {
+                var events = rows as EventDto[] ?? rows.ToArray();
 
-                    eventsList.AddRange(events);
-                }
-
-                await _databaseContext.Commit();
+                eventsList.AddRange(events);
             }
 
             return eventsList;
@@ -62,14 +57,11 @@ namespace EventApp.Data.Repositories
             };
             int result = (int)decimal.MinusOne;
 
-            using (_databaseContext.StartTransaction())
+            using (var connection = await _databaseContext.GetConnection())
             {
-                using (var connection = await _databaseContext.GetConnection())
-                {
-                    result = await
-                        _sqlExecutor.ExecuteScalarStoredProcedureAsync<int>(connection,
-                            Procedure.CheckUniqueEvent, parameters);
-                }
+                result = await
+                    _sqlExecutor.ExecuteScalarStoredProcedureAsync<int>(connection,
+                        Procedure.CheckUniqueEvent, parameters);
             }
 
             return result == decimal.Zero;
@@ -88,16 +80,12 @@ namespace EventApp.Data.Repositories
                 endTime = eventDto.EndTime
             };
 
-            using (_databaseContext.StartTransaction())
+            using (var connection = await _databaseContext.GetConnection())
             {
-                using (var connection = await _databaseContext.GetConnection())
-                {
-                    var newId = await _sqlExecutor.ExecuteScalarStoredProcedureAsync<long>(connection,
-                        Procedure.InsertEvent,
-                        parameters);
-                    eventDto.Id = newId;
-                }
-                await _databaseContext.Commit();
+                var newId = await _sqlExecutor.ExecuteScalarStoredProcedureAsync<long>(connection,
+                    Procedure.InsertEvent,
+                    parameters);
+                eventDto.Id = newId;
             }
 
             return eventDto;
