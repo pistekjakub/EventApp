@@ -1,0 +1,10 @@
+C:\Users\piste\source\repos\EventApp\EventApp.Models\bin\Debug\netcoreapp3.1\EventApp.Models.deps.json
+C:\Users\piste\source\repos\EventApp\EventApp.Models\bin\Debug\netcoreapp3.1\EventApp.Models.dll
+C:\Users\piste\source\repos\EventApp\EventApp.Models\bin\Debug\netcoreapp3.1\EventApp.Models.pdb
+C:\Users\piste\source\repos\EventApp\EventApp.Models\obj\Debug\netcoreapp3.1\EventApp.Models.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\piste\source\repos\EventApp\EventApp.Models\obj\Debug\netcoreapp3.1\EventApp.Models.AssemblyInfoInputs.cache
+C:\Users\piste\source\repos\EventApp\EventApp.Models\obj\Debug\netcoreapp3.1\EventApp.Models.AssemblyInfo.cs
+C:\Users\piste\source\repos\EventApp\EventApp.Models\obj\Debug\netcoreapp3.1\EventApp.Models.csproj.CoreCompileInputs.cache
+C:\Users\piste\source\repos\EventApp\EventApp.Models\obj\Debug\netcoreapp3.1\EventApp.Models.dll
+C:\Users\piste\source\repos\EventApp\EventApp.Models\obj\Debug\netcoreapp3.1\EventApp.Models.pdb
+C:\Users\piste\source\repos\EventApp\EventApp.Models\obj\Debug\netcoreapp3.1\EventApp.Models.csproj.AssemblyReference.cache
