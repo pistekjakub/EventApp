@@ -47,6 +47,7 @@ namespace EventApp
             // Services
             services.AddTransient<IEventService, EventService>();
             services.AddTransient<IRegistrationService, RegistrationService>();
+            services.AddTransient<IAuthorizationService, AuthorizationService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

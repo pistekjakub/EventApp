@@ -13,13 +13,15 @@ namespace EventApp.Controllers
     public class EventController : ControllerBase
     {
         private readonly IEventService _eventService;
+        private readonly IAuthorizationService _authorizationService;
 
         private readonly ILogger<EventController> _logger;
 
-        public EventController(IEventService eventService, ILogger<EventController> logger)
+        public EventController(IEventService eventService, ILogger<EventController> logger, IAuthorizationService authorizationService)
         {
             _eventService = eventService;
             _logger = logger;
+            _authorizationService = authorizationService;
         }
 
         [HttpGet]
@@ -31,6 +33,14 @@ namespace EventApp.Controllers
         [HttpPost]
         public async Task<ActionResult<InsertEventResponse>> Post([FromBody] InsertEventRequest request)
         {
+            if (!_authorizationService.IsEventCreator(request.Login, request.Password)) 
+            {
+                return new InsertEventResponse
+                {
+                    Error = "You are not authorized event creator"
+                };
+            }
+
             try
             {
                 return await _eventService.InsertEvent(request);
