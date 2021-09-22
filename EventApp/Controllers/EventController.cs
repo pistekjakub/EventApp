@@ -14,7 +14,6 @@ namespace EventApp.Controllers
     {
         private readonly IEventService _eventService;
         private readonly IAuthorizationService _authorizationService;
-
         private readonly ILogger<EventController> _logger;
 
         public EventController(IEventService eventService, ILogger<EventController> logger, IAuthorizationService authorizationService)
