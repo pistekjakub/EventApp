@@ -13,7 +13,6 @@ C:\Users\piste\source\repos\EventApp\EventApp\obj\Debug\netcoreapp3.1\EventApp.A
 C:\Users\piste\source\repos\EventApp\EventApp\obj\Debug\netcoreapp3.1\EventApp.csproj.CoreCompileInputs.cache
 C:\Users\piste\source\repos\EventApp\EventApp\obj\Debug\netcoreapp3.1\EventApp.MvcApplicationPartsAssemblyInfo.cache
 C:\Users\piste\source\repos\EventApp\EventApp\obj\Debug\netcoreapp3.1\staticwebassets\EventApp.StaticWebAssets.Manifest.cache
-C:\Users\piste\source\repos\EventApp\EventApp\obj\Debug\netcoreapp3.1\staticwebassets\EventApp.StaticWebAssets.xml
 C:\Users\piste\source\repos\EventApp\EventApp\obj\Debug\netcoreapp3.1\scopedcss\bundle\EventApp.styles.css
 C:\Users\piste\source\repos\EventApp\EventApp\obj\Debug\netcoreapp3.1\EventApp.RazorTargetAssemblyInfo.cache
 C:\Users\piste\source\repos\EventApp\EventApp\obj\Debug\netcoreapp3.1\EventApp.dll
@@ -41,3 +40,4 @@ C:\Users\piste\source\repos\EventApp\EventApp\bin\Debug\netcoreapp3.1\Newtonsoft
 C:\Users\piste\source\repos\EventApp\EventApp\bin\Debug\netcoreapp3.1\Newtonsoft.Json.Bson.dll
 C:\Users\piste\source\repos\EventApp\EventApp\bin\Debug\netcoreapp3.1\System.Web.Cors.dll
 C:\Users\piste\source\repos\EventApp\EventApp\bin\Debug\netcoreapp3.1\System.Web.Http.Cors.dll
+C:\Users\piste\source\repos\EventApp\EventApp\obj\Debug\netcoreapp3.1\staticwebassets\EventApp.StaticWebAssets.xml

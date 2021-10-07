@@ -1,0 +1,8 @@
+{
+  "runtimeOptions": {
+    "additionalProbingPaths": [
+      "C:\\Users\\piste\\.dotnet\\store\\|arch|\\|tfm|",
+      "C:\\Users\\piste\\.nuget\\packages"
+    ]
+  }
+}

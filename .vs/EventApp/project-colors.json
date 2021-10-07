@@ -1,0 +1,16 @@
+{
+  "Version": 1,
+  "ProjectMap": {
+    "c31ab5de-3718-4e0e-85de-203e1144c808": {
+      "ProjectGuid": "c31ab5de-3718-4e0e-85de-203e1144c808",
+      "DisplayName": "EventApp",
+      "ColorIndex": 0
+    },
+    "f06f1e85-a2e9-48ad-ba22-7ffa4d7feaf8": {
+      "ProjectGuid": "f06f1e85-a2e9-48ad-ba22-7ffa4d7feaf8",
+      "DisplayName": "EventApp.Data",
+      "ColorIndex": 1
+    }
+  },
+  "NextColorIndex": 2
+}
